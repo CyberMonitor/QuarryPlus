@@ -32,7 +32,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
       - id: s1
-      - name: Check result
+        name: Check result
         run: |
           echo "ERROR LOG $(grep QUARRYPLUS_TEST < test_log.txt)"
           FILTERED=$(grep QUARRYPLUS_TEST < test_log.txt)
