@@ -9,6 +9,12 @@ on:
       - "!*"
 
 jobs:
+  func:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI func
+        run: echo "$(ls ../)" && echo "$(ls ../ | grep h)"
+
   check:
     runs-on: ubuntu-latest
 
@@ -34,8 +40,8 @@ jobs:
       - id: s1
         name: Check result
         run: |
-          echo "ERROR LOG $(grep QUARRYPLUS_TEST < test_log.txt)"
-          FILTERED=$(grep QUARRYPLUS_TEST < test_log.txt)
+          echo "ERROR LOG $(grep QUARRYPLUS_TEST test_log.txt)"
+          FILTERED=$(grep QUARRYPLUS_TEST test_log.txt)
           echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
         if: ${{ steps.s1.outputs.test }} != ""
