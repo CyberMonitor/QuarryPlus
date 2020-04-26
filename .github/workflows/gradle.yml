@@ -13,7 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: CI func
-        run: echo "$(ls ../)" && echo "$(ls ../ | grep h)"
+        run: |
+          echo "$(ls ../)" && echo "$(ls ../ | grep h)"
+          echo "$(ls /)" > func_test.text
+          echo "$(grep h func_test.text)"
 
   check:
     runs-on: ubuntu-latest
