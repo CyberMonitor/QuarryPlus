@@ -7,6 +7,8 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
@@ -19,6 +21,7 @@ import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPacka
 public class Starter implements IDataProvider {
     private static final Starter INSTANCE = new Starter();
     private static final Logger LOGGER = LogManager.getLogger("QuarryPlus/TestExecutor");
+    private static final Marker MARKER = MarkerManager.getMarker("QUARRYPLUS_TEST");
 
     public static Starter getInstance() {
         return INSTANCE;
@@ -48,10 +51,7 @@ public class Starter implements IDataProvider {
         LOGGER.info(stream.toString());
         summary.getFailures().stream()
             .map(TestExecutionSummary.Failure::getException)
-            .forEach(t -> LOGGER.fatal("Test failed.", t));
-        if (!summary.getFailures().isEmpty()) {
-            LOGGER.error("ERROR_COUNT {}", summary.getFailures().size());
-        }
+            .forEach(t -> LOGGER.fatal(MARKER, "Test failed.", t));
     }
 
     @Override

@@ -27,14 +27,19 @@ jobs:
       - id: s1
         run: |
           chmod +x ./gradlew
-          echo "VAR=$(./gradlew runData --info 2>&1)"
-          echo "FILTERED=$(grep ERROR_COUNT $VAR)"
+          echo "Hello World. Generating data files."
+          VAR=$(./gradlew runData --info 2>&1)
+          echo "FILTERED=$(grep QUARRYPLUS_TEST $VAR)"
           echo "::set-output name=test::${FILTERED}"
+          echo "Hello World. Finished testing."
         continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
       - name: Stop if test failed
-        run: false
+        if: contains(${{ steps.s1.outputs.test }}, ".")
+        run: |
+          echo "${FILTERED}"
+          false
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
