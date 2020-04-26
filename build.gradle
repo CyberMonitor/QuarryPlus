@@ -134,6 +134,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
     implementation(group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.6.2')
 
+    if (Boolean.valueOf(System.getenv("GITHUB_ACTIONS"))) {
+        runtimeOnly("com.kotori316:ScalableCatsForce:2.13.1-build-7:dev")
+    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
