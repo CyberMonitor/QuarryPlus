@@ -48,9 +48,10 @@ jobs:
       - id: s1
         name: Check result
         run: |
-          FILTERED=$(cat error-trace.txt)
-          echo "${FILTERED}"
-          echo "::set-output name=test::${FILTERED}"
+          ls
+      #          FILTERED=$(cat error-trace.txt)
+      #          echo "${FILTERED}"
+      #          echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
         if: ${{ steps.s1.outputs.test }} != ""
         run: echo "LOG=${{ steps.s1.outputs.test }}" #&& false
