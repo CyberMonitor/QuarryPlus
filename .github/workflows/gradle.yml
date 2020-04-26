@@ -41,10 +41,15 @@ jobs:
         continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: data-log
+          path: test_log.txt
       - id: s1
         name: Check result
         run: |
           echo "$(ls)"
+          grep QUARRYPLUS_TEST test_log.txt
           FILTERED=$(grep QUARRYPLUS_TEST test_log.txt)
           echo "ERROR LOG ${FILTERED}"
           echo "::set-output name=test::${FILTERED}"
