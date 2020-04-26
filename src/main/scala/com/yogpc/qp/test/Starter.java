@@ -1,7 +1,13 @@
 package com.yogpc.qp.test;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
@@ -49,9 +55,19 @@ public class Starter implements IDataProvider {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         summary.printTo(new PrintWriter(stream));
         LOGGER.info(stream.toString());
-        summary.getFailures().stream()
-            .map(TestExecutionSummary.Failure::getException)
-            .forEach(t -> LOGGER.fatal(MARKER, "Test failed.", t));
+        List<Throwable> errors = summary.getFailures().stream()
+            .map(TestExecutionSummary.Failure::getException).collect(Collectors.toList());
+        errors.forEach(t -> LOGGER.fatal(MARKER, "Test failed.", t));
+        if (!errors.isEmpty()) {
+            if (Boolean.parseBoolean(System.getenv("GITHUB_ACTIONS"))) {
+                try (BufferedWriter w = Files.newBufferedWriter(Paths.get("error-trace.txt"));
+                     PrintWriter writer = new PrintWriter(w)) {
+                    errors.forEach(t -> t.printStackTrace(writer));
+                } catch (IOException e) {
+                    LOGGER.error("File IO", e);
+                }
+            }
+        }
     }
 
     @Override

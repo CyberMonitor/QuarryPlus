@@ -48,10 +48,8 @@ jobs:
       - id: s1
         name: Check result
         run: |
-          echo "$(ls)"
-          grep QUARRYPLUS_TEST test_log.txt
-          FILTERED=$(grep QUARRYPLUS_TEST test_log.txt)
-          echo "ERROR LOG ${FILTERED}"
+          FILTERED=$(grep -e at error-trace.txt)
+          cat error-trace.txt
           echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
         if: ${{ steps.s1.outputs.test }} != ""
