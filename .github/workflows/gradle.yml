@@ -12,6 +12,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
 
+    outputs:
+      result: ${{ steps.Test.outputs.test }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -23,7 +25,12 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/forge_version.properties') }}
       - name: Test
-        run: chmod +x ./gradlew && ./gradlew runData --info
+        run: |
+        chmod +x ./gradlew
+        VAR=$(./gradlew runData --info 2>&1)
+        FILTERED=$(grep ERROR_COUNT $VAR)
+        echo "::set-output name=test::$FILTERED"
+        continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
       - name: Stop if test failed

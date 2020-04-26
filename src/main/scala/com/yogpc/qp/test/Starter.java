@@ -49,6 +49,9 @@ public class Starter implements IDataProvider {
         summary.getFailures().stream()
             .map(TestExecutionSummary.Failure::getException)
             .forEach(t -> LOGGER.fatal("Test failed.", t));
+        if (!summary.getFailures().isEmpty()) {
+            LOGGER.error("ERROR_COUNT {}", summary.getFailures().size());
+        }
     }
 
     @Override
