@@ -36,7 +36,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
       - name: Stop if test failed
-        if: ${FILTERED} != ""
+        if: ${{ steps.s1.outputs.test }} != ""
         run: |
           echo "FILTERED=${FILTERED}"
           echo "Test ${{ steps.s1.outputs.test }}"
