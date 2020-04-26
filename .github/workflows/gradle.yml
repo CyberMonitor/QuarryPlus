@@ -27,9 +27,9 @@ jobs:
       - name: Test
         run: |
         chmod +x ./gradlew
-        VAR=$(./gradlew runData --info 2>&1)
-        FILTERED=$(grep ERROR_COUNT $VAR)
-        echo "::set-output name=test::$FILTERED"
+        VAR=`./gradlew runData --info 2>&1`
+        FILTERED=`grep ERROR_COUNT ${VAR}'
+        echo "::set-output name=test::${FILTERED}"
         continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
