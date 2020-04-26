@@ -26,10 +26,10 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/forge_version.properties') }}
       - id: s1
         run: |
-        chmod +x ./gradlew
-        echo "VAR=$(./gradlew runData --info 2>&1)"
-        echo "FILTERED=$(grep ERROR_COUNT $VAR)"
-        echo "::set-output name=test::${FILTERED}"
+          chmod +x ./gradlew
+          echo "VAR=$(./gradlew runData --info 2>&1)"
+          echo "FILTERED=$(grep ERROR_COUNT $VAR)"
+          echo "::set-output name=test::${FILTERED}"
         continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
