@@ -48,7 +48,7 @@ jobs:
       - id: s1
         name: Check result
         run: |
-          FILTERED=$(grep -e at error-trace.txt)
+          FILTERED=$(grep --no-messages at error-trace.txt)
           cat error-trace.txt
           echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
