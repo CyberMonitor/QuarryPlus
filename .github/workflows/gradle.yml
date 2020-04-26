@@ -16,7 +16,8 @@ jobs:
         run: |
           echo "$(ls ../)" && echo "$(ls ../ | grep h)"
           echo "$(ls /)" > func_test.text
-          echo "$(grep h func_test.text)"
+          ls /
+          echo "grep = $(grep h func_test.text)"
 
   check:
     runs-on: ubuntu-latest
@@ -44,12 +45,12 @@ jobs:
         name: Check result
         run: |
           echo "$(ls)"
-      #          echo "ERROR LOG $(grep QUARRYPLUS_TEST test_log.txt)"
-      #          FILTERED=$(grep QUARRYPLUS_TEST test_log.txt)
-      #          echo "::set-output name=test::${FILTERED}"
+          FILTERED=$(grep QUARRYPLUS_TEST test_log.txt)
+          echo "ERROR LOG ${FILTERED}"
+          echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
         if: ${{ steps.s1.outputs.test }} != ""
-        run: echo "LOG=${{ steps.s1.outputs.test }}" && false
+        run: echo "LOG=${{ steps.s1.outputs.test }}" #&& false
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
