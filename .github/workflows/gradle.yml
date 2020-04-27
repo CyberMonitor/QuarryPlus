@@ -55,12 +55,6 @@ jobs:
         run: |
           ls
           ! [ -f error-trace.txt ]
-          test -e error-trace.txt
-          if [ $? -eq 0 ]; then
-           false
-          else
-           true
-          fi
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
