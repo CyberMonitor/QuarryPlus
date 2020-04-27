@@ -24,6 +24,8 @@ jobs:
           echo "Exists $?"
           ! [ -f func_test.text ]
           echo "Non Exists $?"
+          ! [ -f it.txt ]
+          echo "Non Exists $?"
 
   check:
     runs-on: ubuntu-latest
@@ -51,6 +53,8 @@ jobs:
           path: test_log.txt
       - name: Stop if test failed.
         run: |
+          ls
+          ! [ -f error-trace.txt ]
           test -e error-trace.txt
           if [ $? -eq 0 ]; then
            false
