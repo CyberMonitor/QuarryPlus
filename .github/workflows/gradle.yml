@@ -19,9 +19,9 @@ jobs:
           ls /
           echo "grep = $(grep h func_test.text)"
           echo "Exists $( test -e func_test.text )"
-          echo "Exists $( [ -e func_test.text ] )"
-          echo "Non Exists $( [ [ -e func_test.text ] -nq true ] )"
-          echo "Non Exists $( ! [ -e func_test.text ] )"
+          echo "Exists $( [ -f func_test.text ] )"
+          echo "Non Exists $( [ [ -f func_test.text ] -nq true ] )"
+          echo "Non Exists $( ! [ -f func_test.text ] )"
 
   check:
     runs-on: ubuntu-latest
