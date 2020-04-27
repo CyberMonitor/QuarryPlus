@@ -20,6 +20,7 @@ jobs:
           echo "grep = $(grep h func_test.text)"
           echo "Exists $([-e func_test.text])"
           echo "Non Exists $([[-e func_test.text] -nq true])"
+          echo "Non Exists $(! [-e func_test.text])"
 
   check:
     runs-on: ubuntu-latest
@@ -46,7 +47,7 @@ jobs:
           name: data-log
           path: test_log.txt
       - name: Stop if test failed.
-        run: [test -e error-trace.txt -ne true]
+        run: ! test -e error-trace.txt
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
