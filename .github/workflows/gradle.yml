@@ -47,7 +47,7 @@ jobs:
           name: data-log
           path: test_log.txt
       - name: Stop if test failed.
-        run: ! test -e error-trace.txt
+        run: test (test -e error-trace.txt) -ne 0
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
