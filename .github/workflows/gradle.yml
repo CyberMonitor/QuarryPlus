@@ -22,8 +22,6 @@ jobs:
           echo "Exists $?"
           [ -f func_test.text ]
           echo "Exists $?"
-          [ [ -f func_test.text ] -nq true ]
-          echo "Non Exists $?"
           ! [ -f func_test.text ]
           echo "Non Exists $?"
 
@@ -55,9 +53,9 @@ jobs:
         run: |
           test -e error-trace.txt
           if [ $? -eq 0 ]; then
-           true
-          else
            false
+          else
+           true
           fi
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
