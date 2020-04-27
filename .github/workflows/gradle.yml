@@ -18,10 +18,14 @@ jobs:
           echo "$(ls /)" > func_test.text
           ls /
           echo "grep = $(grep h func_test.text)"
-          echo "Exists $( test -e func_test.text )"
-          echo "Exists $( [ -f func_test.text ] )"
-          echo "Non Exists $( [ [ -f func_test.text ] -nq true ] )"
-          echo "Non Exists $( ! [ -f func_test.text ] )"
+          test -e func_test.text
+          echo "Exists $?"
+          [ -f func_test.text ]
+          echo "Exists $?"
+          [ [ -f func_test.text ] -nq true ]
+          echo "Non Exists $?"
+          ! [ -f func_test.text ]
+          echo "Non Exists $?"
 
   check:
     runs-on: ubuntu-latest
@@ -48,7 +52,13 @@ jobs:
           name: data-log
           path: test_log.txt
       - name: Stop if test failed.
-        run: test (test -e error-trace.txt) -ne 0
+        run: |
+          test -e error-trace.txt
+          if [ $? -eq 0 ]; then
+           true
+          else
+           false
+          fi
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
         env:
