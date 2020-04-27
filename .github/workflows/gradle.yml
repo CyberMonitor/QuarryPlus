@@ -35,9 +35,7 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/forge_version.properties') }}
       - name: Test
-        run: |
-          chmod +x ./gradlew
-          ./gradlew runData --info > test_log.txt
+        run: chmod +x ./gradlew && ./gradlew runData --info > test_log.txt
         continue-on-error: true
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
@@ -48,12 +46,12 @@ jobs:
       - id: s1
         name: Check result
         run: |
-          ls
-      #          FILTERED=$(cat error-trace.txt)
-      #          echo "${FILTERED}"
-      #          echo "::set-output name=test::${FILTERED}"
+          #ls
+          FILTERED=$(cat error-trace.txt)
+          echo "${FILTERED}"
+          echo "::set-output name=test::${FILTERED}"
       - name: Stop if test failed.
-        if: ${{ steps.s1.outputs.test }} != ""
+        if: contains(${{ steps.s1.outputs.test }}, "")
         run: echo "LOG=${{ steps.s1.outputs.test }}" #&& false
       - name: Compile and Publish
         run: chmod +x ./gradlew && ./gradlew build publish --continue --warning-mode all
