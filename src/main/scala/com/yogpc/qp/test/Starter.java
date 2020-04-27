@@ -58,7 +58,7 @@ public class Starter implements IDataProvider {
         List<Throwable> errors = summary.getFailures().stream()
             .map(TestExecutionSummary.Failure::getException).collect(Collectors.toList());
         errors.forEach(t -> LOGGER.fatal(MARKER, "Test failed.", t));
-        if (Boolean.parseBoolean(System.getenv("GITHUB_ACTIONS"))) {
+        if (Boolean.parseBoolean(System.getenv("GITHUB_ACTIONS")) && !errors.isEmpty()) {
             try (BufferedWriter w = Files.newBufferedWriter(Paths.get("..", "error-trace.txt"));
                  PrintWriter writer = new PrintWriter(w)) {
                 errors.forEach(t -> t.printStackTrace(writer));
